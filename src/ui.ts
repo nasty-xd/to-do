@@ -1,28 +1,24 @@
-// Модуль, отвечабщий за взаимомодействие с DOM
+// Module responsible for interacting with the DOM
 import type { Task, Status } from './types';
 
-// Утилита форматирования даты для пользовательского вывода
+// Date formatting utility for user display
 export function formatDate(iso: string): string {
-    // Преобразуем ISO-строчку в удобночитаемую дату/время
     const d = new Date(iso);
-    // toLocaleString - простой способ вывести дату с учетом локали
     return d.toLocaleString(undefined, {
         year: 'numeric', month: '2-digit', day: '2-digit',
         hour: '2-digit', minute: '2-digit'
     });
 }
 
-// Создание DOM-элемента карточки задачи
+// Creating a DOM element for a task card
 export function createTaskElement(task: Task): HTMLElement {
     const card = document.createElement('article');
     card.className = 'card';
     card.setAttribute('role', 'listitem');
-    // Для DnD: указывем, что это элемент можно перетаскивать
     card.draggable = true;
-    // Сохраняем id в data-атрибуте, чтобы легко извлечь при drop
     card.dataset.id = task.id;
 
-    // Кнопка удаления карточки
+    // Delete card button
     const delBtn = document.createElement('button');
     delBtn.className = 'card-delete';
     delBtn.type = 'button';
@@ -30,40 +26,35 @@ export function createTaskElement(task: Task): HTMLElement {
     delBtn.setAttribute('aria-label', 'Delete task');
     delBtn.textContent = 'x';
 
-    // Заголовок задачи
+    // Task title
     const titleEl = document.createElement('div');
     titleEl.className = 'card-title';
     titleEl.textContent = task.title;
 
-    // Метаданные: дата создания
+    // Metadata: creation date
     const metaEl = document.createElement('div');
     metaEl.className = 'card-meta';
     metaEl.textContent = `Created: ${formatDate(task.createdAt)}`;
 
-    //
     const priorityEl = document.createElement('div');
     priorityEl.className = 'card-priority';
     priorityEl.textContent = `Priority: ${task.priority}`;
 
     card.append(delBtn, titleEl, metaEl, priorityEl);
-    //
 
 
     card.append(delBtn, titleEl, metaEl);
     return card;
 }
 
-//  Привязка обработчиков Drag & Drop к колонкам и карточкам
-// onMove - колбэк, вызывается при переносе карточки в новую колонку
+// Drag & Drop
 export function bindDragAndDrop(
     columns: Record<Status, HTMLElement>,
     onMove: (taskId: string, to: Status) => void
 ): void {
-    // Навешиваем обработчики на каждую колонку
     (Object.keys(columns) as Status[]).forEach((status) => {
         const col = columns[status];
 
-        // При перетаскивании над колонкой — разрешаем drop
         col.addEventListener('dragover', (e) => {
             e.preventDefault();
             col.classList.add('drag-over');
@@ -73,7 +64,6 @@ export function bindDragAndDrop(
             col.classList.remove('drag-over');
         });
 
-        // При броске карточки: извлекаем id и оповещаем колбэк
         col.addEventListener('drop', (e) => {
             e.preventDefault();
             col.classList.remove('drag-over');
@@ -82,15 +72,12 @@ export function bindDragAndDrop(
         });
     });
 
-    // Делегируем обработчик dragstart на весь документ: карточки создаются динамически
     document.addEventListener('dragstart', (e) => {
         const target = e.target as HTMLElement | null;
         if (!target) return;
-        // Проверяем, что старт перетаскивания относится к карточке
         const card = target.closest('.card') as HTMLElement | null;
         if (card && card.dataset.id) {
             e.dataTransfer?.setData('text/plain', card.dataset.id);
-            // Небольшой визуальный эффект: полупрозрачность в момент переноса
             card.style.opacity = '0.6';
         }
     });
@@ -105,14 +92,13 @@ export function bindDragAndDrop(
     });
 }
 
-    // Рендер задач в соответствующие колонки
+    // Render tasks into their respective columns
 export function renderBoard(tasks: Task[], columns: Record<Status, HTMLElement>): void {
-    // Сначала очищаем содержимое колонок
     (Object.keys(columns) as Status[]).forEach((status) => {
         columns[status].innerHTML = '';
     });
 
-    // Затем создаем карточки и добавляем в нужную колонку
+    // Create cards and add them to the appropriate column
     tasks.forEach((task) => {
         const el = createTaskElement(task);
         columns[task.status].appendChild(el);
