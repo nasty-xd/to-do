@@ -29,8 +29,7 @@ Each task has:
 1. Clone the repository:
 
 ```bash
-git clone <repository_URL>
-cd ts_todo
+git clone https://github.com/nasty-xd/to-do.git
 ```
 
 2. Install dependencies:
