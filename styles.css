@@ -1,18 +1,14 @@
-/*
-  Простой, чистый стиль для доски Kanban.
-  Комментарии на русском, как просили.
-*/
 
 :root {
-  --bg: #0f172a;         /* Фон приложения (темный синий/сланцевый) */
-  --panel: #111827;      /* Фон панели/колонки */
-  --muted: #9ca3af;      /* Вторичный текст */
-  --text: #e5e7eb;       /* Основной текст */
-  --accent: #6366f1;     /* Акцентный цвет (интерактив) */
-  --accent-weak: #4f46e5;/* Вариация для hover */
-  --border: #1f2937;     /* Контур/границы */
-  --card: #0b1220;       /* Фон карточки */
-  --card-border: #1f2a44;/* Рамка карточки */
+  --bg: #0f172a;
+  --panel: #111827;
+  --muted: #9ca3af;
+  --text: #e5e7eb;
+  --accent: #6366f1;
+  --accent-weak: #4f46e5;
+  --border: #1f2937;
+  --card: #0b1220;
+  --card-border: #1f2a44;
   --shadow: rgba(0,0,0,0.35);
 }
 
@@ -123,7 +119,7 @@ body {
   padding: 10px 12px;
   box-shadow: 0 1px 0 0 rgba(255,255,255,0.02) inset,
               0 4px 12px var(--shadow);
-  position: relative; /* Чтобы можно было позиционировать кнопку удаления */
+  position: relative; 
 }
 .card[draggable="true"] { cursor: grab; }
 .card:active { cursor: grabbing; }
@@ -137,7 +133,6 @@ body {
   font-size: 12px;
 }
 
-/* Кнопка удаления карточки */
 .card-delete {
   position: absolute;
   top: 8px;
@@ -156,19 +151,18 @@ body {
   padding: 0;
 }
 .card-delete:hover {
-  color: #ef4444; /* красный оттенок */
+  color: #ef4444;
   border-color: #ef4444;
   background: rgba(239, 68, 68, 0.08);
 }
 
-/* Визуальное подтверждение завершения задачи (1 секунда) */
 @keyframes donePulse {
   0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.55), 0 4px 12px var(--shadow); transform: scale(1); }
   60% { box-shadow: 0 0 0 8px rgba(16,185,129,0.0), 0 6px 14px var(--shadow); transform: scale(1.01); }
   100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.0), 0 4px 12px var(--shadow); transform: scale(1); }
 }
 .card.flash-done {
-  border-color: #10b981; /* Зеленый ободок как акцент завершения */
+  border-color: #10b981; 
   animation: donePulse 1s ease-out;
 }
 
@@ -178,7 +172,6 @@ body {
 }
 
 
-/* Стили для селекта */
 #task-priority {
     padding: 5px 10px;
     border-radius: 5px;
@@ -186,33 +179,29 @@ body {
     font-weight: bold;
     cursor: pointer;
     outline: none;
-    /* Фон по умолчанию */
     background-color: #fff3cd;
     color: #856404;
 }
 
-/* Разные цвета для каждого варианта (в выпадающем списке) */
 #task-priority option[value="low"] {
-    background-color: #d4edda; /* зелёный */
+    background-color: #d4edda; 
     color: #155724;
 }
 
 #task-priority option[value="medium"] {
-    background-color: #fff3cd; /* жёлтый */
+    background-color: #fff3cd; 
     color: #856404;
 }
 
 #task-priority option[value="high"] {
-    background-color: #f8d7da; /* красный */
+    background-color: #f8d7da;
     color: #721c24;
 }
 
-/* Эффект при наведении */
 #task-priority:hover {
     border-color: #9fb6ce;
 }
 
-/* Стили для задач в колонках */
 .task {
     padding: 8px 12px;
     margin: 5px 0;
@@ -220,7 +209,6 @@ body {
     font-weight: bold;
 }
 
-/* Цвет текста в зависимости от приоритета */
 .task.low { color: #155724; background-color: #d4edda; }
 .task.medium { color: #856404; background-color: #fff3cd; }
 .task.high { color: #721c24; background-color: #f8d7da; }
