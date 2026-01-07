@@ -1,8 +1,7 @@
-// Модуль для работы с localStorage
-// Содержит функции загрузки/сохранения списка задач и генерации id
+// Module for working with localStorage
+// Contains functions for loading/saving the task list and generating IDs
 const STORAGE_KEY = 'kanban_tasks_v1';
-// Безопасная загрузка задач из localStorage.
-// Если записей нет или формат поврежден - вернем пустой массив.
+// Safe loading of tasks from localStorage
 export function loadTasks() {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -11,7 +10,6 @@ export function loadTasks() {
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed))
             return [];
-        // Простейшая валидация структуры
         return parsed.filter((t) => t && typeof t === 'object' &&
             typeof t.id === 'string' &&
             typeof t.title === 'string' &&
@@ -22,12 +20,11 @@ export function loadTasks() {
         return [];
     }
 }
-// Сохранение массива задач как JSON-строки
+// Saving the task array as a JSON string
 export function saveTasks(tasks) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
-// Простейшая генерация уникального идентификатора
-// Использует время + случайный суффикс
+// Simple generation of a unique identifier
 export function generateId() {
     const rnd = Math.random().toString(36).slice(2, 8);
     return `${Date.now().toString(36)}_${rnd}`;
